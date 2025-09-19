@@ -1,202 +1,188 @@
-##############
-# basic python
-# v0.0.1
-##############
-
-##########################
-# how to read this chapter
-##########################
-1 + 1
-
-##########
-# comments
-##########
-
-# print the result of 1 + 1
-print(1 + 1)
-
-###########
-# variables
-###########
-
-three_pt_made = 4
-
-three_pt_made
-3*three_pt_made
-
-three_pt_made = three_pt_made + 1
-
-three_pt_made
-
-####################
-# types of variables
-####################
-
-over_under = 216  # int
-fg_percentage = 0.48  # float
-
-starting_c = 'Karl-Anthony Towns'
-starting_pg = "D'Angelo Russell"
-
-type(starting_c)
-
-type(over_under)
-
-starters = f'{starting_c}, {starting_pg}, etc.'
-starters
-
-# string methods
-'from downtown!'.upper()
-
-'Ron Artest'.replace('Artest', 'World Peace')
-
-####################################
-# How to figure things out in Python
-####################################
-'lebron james'.capitalize()
-
-'  lebron james'
-'lebron james'
-
-#######
-# bools
-#######
-team1_pts = 110
-team2_pts = 120
-
-# and these are all bools:
-team1_won = team1_pts > team2_pts
-team2_won = team1_pts < team2_pts
-teams_tied = team1_pts == team2_pts
-teams_did_not_tie = team1_pts != team2_pts
-
-type(team1_won)
-teams_did_not_tie
-
-# error because test for equality is ==, not =
-# teams_tied = (team1_pts = team2_pts)  # commented out since it throws an error
-
-shootout = (team1_pts > 130) and (team2_pts > 130)
-at_least_one_good_team = (team1_pts > 120) or (team2_pts > 120)
-you_guys_are_bad = not ((team1_pts > 100) or (team2_pts > 100))
-meh = not (shootout or at_least_one_good_team or you_guys_are_bad)
-
-###############
-# if statements
-###############
-if team1_won:
-  message = "Nice job team 1!"
-elif team2_won:
-  message = "Way to go team 2!!"
-else:
-  message = "must have tied!"
-
-message
-
-#################
-# container types
-#################
-
-# lists
-roster_list = ['kevin durant', 'kyrie irving', 'james harden']
-
-roster_list[0]
-roster_list[0:2]
-roster_list[-2:]
-
-# dicts
-roster_dict = {'PF': 'kevin durant',
-               'SG': 'kyrie irving',
-               'PG': 'james harden'}
-
-roster_dict['PF']
-roster_dict['C'] = 'deandre jordan'
-
-pos  = 'PF'
-roster_dict[pos]
-
-# unpacking
-sg, pg = ['kyrie irving', 'james harden']
-
-sg = 'kyrie irving'
-pg = 'james harden'
-
-# gives an error - n of variables doesn't match n items in list
-# sg, pg = ['kevin durant', 'kyrie irving', 'james harden']  # commented out w/ error
-
 #######
 # loops
 #######
+print("############## LOOPS ##############\n")
 
-# looping over a list
+#################
+# Looping over a list
+#################
+
 roster_list = ['kevin durant', 'james harden', 'kyrie irving']
 
+# Crear una lista vacía para almacenar los nombres capitalizados
 roster_list_upper = ['', '', '']
+
+# Usando un bucle for con índice manual
 i = 0
 for player in roster_list:
-    roster_list_upper[i] = player.title()
-    i = i + 1
+    roster_list_upper[i] = player.title()  # Convierte cada nombre a Title Case, todas las palabras empiezan por mayúscula
+    i += 1  # Incrementa el índice
+print("Roster list capitalized:", roster_list_upper)
 
-roster_list_upper
+# Alternativa más pythonica usando list comprehension
+roster_list_upper2 = [player.title() for player in roster_list]
+print("Roster list capitalized (list comprehension):", roster_list_upper2)
 
-for x in roster_dict:
-    print(f"position: {x}")
+#################
+# Looping over a dictionary
+#################
 
-for x in roster_dict:
-   print(f"position: {x}")
-   print(f"player: {roster_dict[x]}")
+roster_dict = {
+    'PF': 'kevin durant',
+    'SG': 'kyrie irving',
+    'PG': 'james harden',
+    'C': 'deandre jordan'
+}
 
-for x, y in roster_dict.items():
-    print(f"position: {x}")
-    print(f"player: {y}")
+# Iterar sobre las claves del diccionario
+print("\nPositions only:")
+for position in roster_dict:
+    print(f"position: {position}")
+
+# Iterar sobre las claves y acceder al valor manualmente
+print("\nPositions and players (access via key):")
+for position in roster_dict:
+    print(f"position: {position}")
+    print(f"player: {roster_dict[position]}")
+
+# Iterar directamente sobre los pares clave-valor
+print("\nPositions and players (using items()):")
+for position, player in roster_dict.items():
+    print(f"position: {position}")
+    print(f"player: {player}")
+
+
+#######
+# loops - advanced
+#######
+print("############## LOOPS ADVANCED ##############\n")
+
+#################
+# Looping over a list with enumerate()
+#################
+
+roster_list = ['kevin durant', 'james harden', 'kyrie irving']
+
+# enumerate devuelve índice y valor al mismo tiempo
+print("Using enumerate():")
+for i, player in enumerate(roster_list):
+    print(f"Player {i+1}: {player.title()}")
+
+#################
+# Using break and continue
+#################
+
+print("\nUsing break and continue:")
+for player in roster_list:
+    if player == 'james harden':
+        print("Found James Harden! Stopping loop.")
+        break  # sale del loop al encontrar James Harden
+    if player == 'kyrie irving':
+        print("Skipping Kyrie Irving")
+        continue  # salta esta iteración
+    print("Processing player:", player.title())
+
+#################
+# Nested loops
+#################
+
+teams = [
+    {'name': 'Team A', 'players': ['kevin durant', 'kyrie irving']},
+    {'name': 'Team B', 'players': ['james harden', 'deandre jordan']}
+]
+
+print("\nNested loops over teams and their players:")
+for team in teams:
+    print(f"Team: {team['name']}")
+    for player in team['players']:
+        print(f"  Player: {player.title()}")
+
+#################
+# Looping over dictionary with conditions
+#################
+
+roster_dict = {
+    'PF': 'kevin durant',
+    'SG': 'kyrie irving',
+    'PG': 'james harden',
+    'C': 'deandre jordan'
+}
+
+print("\nLooping over dict with conditions:")
+for position, player in roster_dict.items():
+    if 'james' in player:
+        print(f"Skipping {player.title()}")
+        continue
+    print(f"Position: {position}, Player: {player.title()}")
 
 ################
 # comprehensions
 ################
 
-# lists
-roster_list
-roster_list_proper = [x.title() for x in roster_list]
-roster_list_proper
+print("############## COMPREHENSIONS ##############\n")
 
+#################
+# LIST COMPREHENSIONS
+#################
+
+roster_list = ['kevin durant', 'james harden', 'kyrie irving']
+
+# Crear nueva lista con nombres capitalizados
+roster_list_proper = [x.capitalize() for x in roster_list]
+print("Roster capitalized:", roster_list_proper)
+
+# Alternativa con otro nombre de variable en el for
 roster_list_proper_alt = [y.title() for y in roster_list]
+print("Roster capitalized (title):", roster_list_proper_alt)
 
-type([x.title() for x in roster_list])
-[x.title() for x in roster_list][:2]
+# Tipo de una list comprehension
+print("Type:", type([x.title() for x in roster_list]))
 
+# Slice sobre el resultado de una comprehension
+print("First two players capitalized:", [x.title() for x in roster_list][:2])
+
+# Obtener solo los apellidos
 roster_last_names = [full_name.split(' ')[1] for full_name in roster_list]
-roster_last_names
+print("Last names:", roster_last_names)
 
+# Ejemplo simple de split
 full_name = 'kevin durant'
-full_name.split(' ')
-full_name.split(' ')[1]
+print("Full name split:", full_name.split(' '))
+print("Last name only:", full_name.split(' ')[1])
 
-roster_k_only = [
-    x for x in roster_list if x.startswith('k')]
-roster_k_only
+# Filtrar solo jugadores cuyo nombre empieza con 'k'
+roster_k_only = [x for x in roster_list if x.startswith('k')]
+print("Players starting with 'k':", roster_k_only)
 
-'kevin durant'.startswith('k')
+# Mismo filtro pero capitalizando nombres
+roster_k_only_title = [x.title() for x in roster_list if x.startswith('k')]
+print("Players starting with 'k' (capitalized):", roster_k_only_title)
 
-'james harden'.startswith('k')
 
-'kyrie irving'.startswith('k')
+#################
+# DICT COMPREHENSIONS
+#################
 
-roster_k_only_title = [
-    x.title() for x in roster_list if x.startswith('k')]
-roster_k_only_title
-
-# dicts
 salary_per_player = {
-    'kevin durant': 39058950, 'kyrie irving': 33460350, 'james harden': 41254920}
+    'kevin durant': 39058950,
+    'kyrie irving': 33460350,
+    'james harden': 41254920
+}
 
+# Crear diccionario con nombre en mayúsculas y salario en millones
 salary_m_per_upper_player = {
-    name.upper(): salary/1000000 for name, salary in salary_per_player.items()}
+    name.upper(): salary / 1_000_000
+    for name, salary in salary_per_player.items()
+}
+print("Salary in millions per player (upper names):", salary_m_per_upper_player)
 
-salary_m_per_upper_player
+# Sumar valores simples con sum()
+print("Sum of [1, 2, 3]:", sum([1, 2, 3]))
 
-sum([1, 2, 3])
+# Sumar salarios de todos los jugadores
+total_salary = sum([salary for _, salary in salary_per_player.items()])
+print("Total salary of roster:", total_salary)
 
-sum([salary for _, salary in salary_per_player.items()])
 
 ###########
 # functions
@@ -259,7 +245,7 @@ roster_list
 pts(8, 4, 5)
 pts(8, 5, 4)  # order matters!
 
-pts?
+# pts?
 
 pts(fg3=4, fg2=8, ft=5)  # keyword arguments
 pts(8, 4, ft=5)

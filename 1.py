@@ -5,7 +5,7 @@ print('hello')
 
 print(pd.__version__)
 
-PROJECT_PATH = "/Users/anartz/Documents/GitHub/code-with-basketball/code-basketball-files/"
+PROJECT_PATH = "./code-basketball-files/"
 DATA_DIR = "data/"
 
 df = pd.read_csv(path.join(PROJECT_PATH,DATA_DIR, "shot.csv"))
