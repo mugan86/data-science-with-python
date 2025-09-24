@@ -1,33 +1,34 @@
 from os import path
 import pandas as pd
+from project.config import get_file_path, FileExtension, Project
 
-# change this to the directory where the csv files that come with the book are
-# stored
-# on Windows it might be something like 'C:/mydir'
+# Ejecutamos con 
+# python3 -m code-basketball-files.code.03-pandas.00_basics
 
-DATA_DIR = './data'
+filePath = get_file_path("shot", FileExtension.CSV, Project.BASKETBALL)
+print("Buscando en:", filePath)
 
 ##############
 # Loading data
 ##############
-shots = pd.read_csv(path.join(DATA_DIR, 'shots.csv'))
+shots = pd.read_csv(filePath)
 
-type(shots)
+print(type(shots))
 
 ##################################
 # DataFrame methods and attributes
 ##################################
-shots.head()
+print(shots.head())
 
-shots.columns
+print(shots.columns)
 
-shots.shape
+print(f'Number rows and columns: {shots.shape}')
 
 #################################
 # Working with subsets of columns
 #################################
-# A single column
-shots['name'].head()
+# A single column (5 items for default from start)
+print(shots['name'].head())
 
 type(shots['name'])
 
@@ -57,7 +58,7 @@ shots.head()  # now player_id is index
 
 # alternate to using inplace, reassign adp
 # reload shots with default 0, 1, ... index
-shots = pd.read_csv(path.join(DATA_DIR, 'shots.csv'))
+shots = pd.read_csv(get_file_path("shots", FileExtension.CSV, Project.BASKETBALL))
 shots = shots.set_index('shot_id')
 shots.head()  # now shot_id is index
 
@@ -82,7 +83,7 @@ shots['made'].head()
 #################
 # Outputting data
 #################
-shots_ot.to_csv(path.join(DATA_DIR, 'shots_ot.csv'))
+shots_ot.to_csv(get_file_path("shots_ot", FileExtension.CSV, Project.BASKETBALL))
 
-shots_ot.to_csv(path.join(DATA_DIR, 'shots_ot_no_index.csv'), index=False)
+shots_ot.to_csv(get_file_path("shots_ot_no_index", FileExtension.CSV, Project.BASKETBALL), index=False)
 
