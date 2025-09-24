@@ -20,7 +20,7 @@ print("Tipo de team1_won:", type(team1_won))
 # Mostrar resultado de teams_did_not_tie
 print("Teams did not tie:", teams_did_not_tie)
 
-# ❌ Comentado: error de sintaxis si usamos = en vez de == para comparar
+# Error de sintaxis si usamos = en vez de == para comparar
 # teams_tied = (team1_pts = team2_pts)
 
 #######

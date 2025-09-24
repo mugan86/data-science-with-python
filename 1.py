@@ -1,12 +1,17 @@
 import pandas as pd
-from os import path
+
+# Ejecutamos con 
+# python3 -m 1
 
 print('hello')
 
 print(pd.__version__)
 
-PROJECT_PATH = "./code-basketball-files/"
-DATA_DIR = "data/"
+from project.config import get_file_path, FileExtension
 
-df = pd.read_csv(path.join(PROJECT_PATH,DATA_DIR, "shot.csv"))
+filePath = get_file_path("shot", FileExtension.CSV)
+print("Buscando en:", filePath)
+
+
+df = pd.read_csv(filePath)
 print(df.head(2))

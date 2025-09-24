@@ -1,10 +1,10 @@
-## Debe de ser la raíz donde está el directorio donde no encontremos, en este caso fuera de "code"
-PROJECT_PATH = "./code-basketball-files/"
-DATA_DIR = "data/"
 
-from os import path
+from project.config import get_file_path, FileExtension
 
-filePath = path.join(PROJECT_PATH, DATA_DIR, "shot.csv")
+# Ejecutamos con 
+# python3 -m code-basketball-files.code.02-python.10_read_csv
+
+filePath = get_file_path("shot", FileExtension.CSV)
 print("Buscando en:", filePath)
 
 with open(filePath, "r", encoding="utf-8") as f:
