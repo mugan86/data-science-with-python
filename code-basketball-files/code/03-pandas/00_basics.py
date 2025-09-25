@@ -1,4 +1,3 @@
-from os import path
 import pandas as pd
 from project.config import get_file_path, FileExtension, Project
 
