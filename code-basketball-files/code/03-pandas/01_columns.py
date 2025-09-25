@@ -1,27 +1,40 @@
 import pandas as pd
-from os import path
+from project.config import get_file_path, FileExtension, Project
 
-# change this to the directory where the csv files that come with the book are
-# stored
-# on Windows it might be something like 'C:/mydir'
+# Ejecutamos con 
+# python3 -m code-basketball-files.code.03-pandas.01_columns
 
-DATA_DIR = './data'
+# Página 74 Ejercicio 1: Cargar los datos "games.csv". Esto lo usaremos para los siguientes puntos
 
 # load player-game data
-pg = pd.read_csv(path.join(DATA_DIR, 'player_game.csv'))
+
+filePath = get_file_path("player_game", FileExtension.CSV, Project.BASKETBALL)
+print("Find Path:", filePath)
+
+pg = pd.read_csv(filePath)
 
 # book picks up here:
 
 # creating and modifying columns
+print('Todos anotan 2 puntos')
 pg['pts_per_shot'] = 2
-pg[['game_id', 'player_id', 'pts_per_shot']].head()
+print(pg[['game_id', 'player_id', 'pts_per_shot']].head(10))
 
+print('Todos anotan 3 puntos')
 pg['pts_per_shot'] = 3
-pg[['game_id', 'player_id', 'pts_per_shot']].head()
+print(pg[['game_id', 'player_id', 'pts_per_shot']].head(10))
 
 # math and number columns
+# fg3m = triples convertidos => puntos en triples 3*fg3m
+# fgm = tiros de campo convertidos
+# canasta de dos = fgm - fg3m => puntos de dos = (fgm - fg3m)*2
 pg['pts_from_fgs'] = (pg['fg3m']*3 + (pg['fgm'] - pg['fg3m'])*2)
-pg[['name', 'game_id', 'pts_from_fgs']].head()
+
+# Esto lo añado yo para mejorarlo
+pg['fg2m'] = pg['fgm'] - pg['fg3m']
+
+print("Puntos convertidos") # Añado yo fg2m y fg3m para mejorarlo
+print(pg[['name', 'game_id', 'pts_from_fgs', 'fg2m', 'fg3m']].head())
 
 import numpy as np  # note: normally you'd import this at the top of the file
 
