@@ -15,7 +15,7 @@ pg = pd.read_csv(filePath)
 
 # book picks up here:
 
-# creating and modifying columns
+# Página 76 - creating and modifying columns
 print('Todos anotan 2 puntos')
 pg['pts_per_shot'] = 2
 print(pg[['game_id', 'player_id', 'pts_per_shot']].head(10))
@@ -36,6 +36,7 @@ pg['fg2m'] = pg['fgm'] - pg['fg3m']
 print("Puntos convertidos") # Añado yo fg2m y fg3m para mejorarlo
 print(pg[['name', 'game_id', 'pts_from_fgs', 'fg2m', 'fg3m']].head())
 
+# Página 77
 import numpy as np  # note: normally you'd import this at the top of the file
 
 pg['biggest_impact'] = np.abs(pg['plus_minus'])
