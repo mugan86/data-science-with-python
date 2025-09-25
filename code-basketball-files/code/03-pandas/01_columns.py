@@ -36,7 +36,7 @@ pg['fg2m'] = pg['fgm'] - pg['fg3m']
 print("Puntos convertidos") # Añado yo fg2m y fg3m para mejorarlo
 print(pg[['name', 'game_id', 'pts_from_fgs', 'fg2m', 'fg3m']].head())
 
-# Página 77
+# Página 77-78
 import numpy as np  # note: normally you'd import this at the top of the file
 
 pg['biggest_impact'] = np.abs(pg['plus_minus'])
@@ -45,16 +45,22 @@ pg['ln_pts'] = np.log(pg['pts'])
 
 pg['court_length'] = 94
 
-pg[['name', 'game_id', 'court_length']].sample(5)
+# 'sample' nos da una muestra aleatoria entre todos los registros
+print('Muestra aleatoria con "sample"')
+print(pg[['name', 'game_id', 'court_length']].sample(5))
 
 # string columns
-pg['name'].str.upper().sample(5)
+print('Muestra aleatoria con "sample" mostrando los "name" en mayúsculas')
+print(pg['name'].str.upper().sample(5))
 
-pg['name'].str.replace('.', ' ').sample(5)
+print('Muestra aleatoria con "sample" mostrando los "name" donde sustituimos los "." por " "')
+print(pg['name'].str.replace('.', ' ').sample(5))
 
-(pg['name'] + ', ' + pg['team']).sample(5)
+print("Muestra aleatoria del nombre del jugador y su equipo")
+print((pg['name'] + ', ' + pg['team']).sample(5))
 
-pg['name'].str.replace('.', ' ').str.lower().sample(5)
+print("Muestra aleatoria del nombre del jugador en minúsculas y sin '.'")
+print(pg['name'].str.replace('.', ' ').str.lower().sample(5))
 
 # boolean columns
 pg['is_a_guard'] = (pg['pos'] == 'Guard')
