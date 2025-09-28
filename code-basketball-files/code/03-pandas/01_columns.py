@@ -46,6 +46,7 @@ pg['ln_pts'] = np.log(pg['pts'])
 pg['court_length'] = 94
 
 # 'sample' nos da una muestra aleatoria entre todos los registros
+# 'head' da desde el registro 0 hasta 5 (por defecto) o el número que determinemos
 print('Muestra aleatoria con "sample"')
 print(pg[['name', 'game_id', 'court_length']].sample(5))
 
@@ -64,13 +65,28 @@ print(pg['name'].str.replace('.', ' ').str.lower().sample(5))
 
 # boolean columns
 pg['is_a_guard'] = (pg['pos'] == 'Guard')
-pg[['name', 'is_a_guard']].sample(5)
+print('Comprobar si son escoltas (Guard)')
+print(pg[['name', 'pos', 'is_a_guard']].sample(5))
 
 pg['is_a_forward_or_center'] = (pg['pos'] == 'Forward') | (pg['pos'] == 'Center')
 pg['good_guard_game'] = (pg['pos'] == 'Guard') & (pg['pts'] >= 30)
 pg['not_gt_10_pts_or_assists'] = ~((pg['pts'] > 10) | (pg['ast'] > 10))
 
-(pg[['pts', 'ast']] > 10).sample(5)
+print('Comprobar si son escoltas (Guard) o Pivots (Center)')
+print(pg[['name', 'pos', 'is_a_forward_or_center']].sample(5))
+print('Comprobar si son escoltas (Guard) con 30 ó + puntos')
+print(pg[['name', 'pos', 'pts', 'good_guard_game']].sample(5))
+
+print(pg[['name', 'pos', 'pts', 'ast', 'not_gt_10_pts_or_assists']].sample(5))
+
+print('Más de 10 puntos y 10 asistencias ')
+print((pg[['pts', 'ast']] > 10).sample(5))
+
+# Operación vectorizada
+pg["more_than_10_pts_ast"] = (pg["pts"] > 10) & (pg["ast"] > 10)
+
+print('Más de 10 puntos y 10 asistencias ')
+print(pg[['name', 'more_than_10_pts_ast', 'pts', 'ast']].sample(5))
 
 # Applying functions to columns
 def is_w_pac(team):
@@ -82,22 +98,47 @@ def is_w_pac(team):
 
 pg['is_w_pac'] = pg['team'].apply(is_w_pac)
 
-pg[['name', 'team', 'is_w_pac']].sample(5)
+print("Equipos de División del Pacífico")
+print(pg[['name', 'team', 'is_w_pac']].sample(5))
 
 pg['is_w_pac_alternate'] = pg['team'].apply(
     lambda x: x in ['LAC', 'LAL', 'PHX', 'SAC', 'GSW'])
 
+print("Equipos de División del Pacífico (con lambda)")
+print(pg[['name', 'team', 'is_w_pac_alternate']].sample(5))
+
+print('Columnas actuales:')
+print(pg.columns)
+
+# Página 80-81
+
 # Dropping Columns
 pg.drop('is_w_pac_alternate', axis=1, inplace=True)
+pg.drop('is_w_pac', axis=1, inplace=True)
+
+
+print('Columnas actuales:')
+print(pg.columns)
 
 # Renaming Columns
 pg.columns = [x.upper() for x in pg.columns]
 
-pg.head()
+print('Columnas actuales después de convertir en mayúsculas:')
+print(pg.columns)
 
+print("Primeros 5 registros:", pg.head())
+
+# Volver a ponerlas en minúsculas
 pg.columns = [x.lower() for x in pg.columns]
 
+print('Columnas actuales después de convertir en minúsculas:')
+print(pg.columns)
+
+# Renombrar columnas
+print('Columnas actuales después de renombrar fgm por field_goals_made:')
+
 pg.rename(columns={'fgm': 'field_goals_made'}, inplace=True)
+print(pg.columns)
 
 # missing data
 pg['ft_pct'] = pg['ftm']/pg['fta']
