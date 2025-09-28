@@ -82,7 +82,7 @@ print(pg[['name', 'pos', 'pts', 'ast', 'not_gt_10_pts_or_assists']].sample(5))
 print('Más de 10 puntos y 10 asistencias ')
 print((pg[['pts', 'ast']] > 10).sample(5))
 
-# Operación vectorizada
+# Operación vectorizada con nueva columna
 pg["more_than_10_pts_ast"] = (pg["pts"] > 10) & (pg["ast"] > 10)
 
 print('Más de 10 puntos y 10 asistencias ')
