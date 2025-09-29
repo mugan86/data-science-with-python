@@ -148,26 +148,26 @@ print(pg['ft_pct'].isnull().head())
 
 print(pg['ft_pct'].notnull().head())
 
-print(pg['ft_pct'].fillna(-99).head())
+pg['ft_pct'] = pg['ft_pct'].fillna(0)
+print(pg[['name', 'team', 'ftm', 'fta', 'ft_pct', 'date']].head())
 
 # Changing column types
 pg['date'].sample(5)
 
 date = '20191119'
 
-year = date[0:4]
-month = date[4:6]
-day = date[6:8]
+year = date[0:4]  # Año
+month = date[4:6] # Mes
+day = date[6:8]   # Día
 
-year
-month
-day
+print(f'{year}/{month}/{day}')
 
 # pg['month'] = pg['date'].str[4:6]  # commented out since it gives an error
-
 pg['month'] = pg['date'].astype(str).str[4:6]
-pg[['name', 'team', 'month', 'date']].sample(5)
+# Convertir de string a date
+pg['date'] = pd.to_datetime(pg['date'], format='%Y%m%d')
+print(pg[['name', 'team', 'pts', 'ast', 'month', 'date']].sample(5))
 
 pg['month'].astype(int).sample(5)
 
-pg.dtypes.head()
+print(pg.dtypes.head(30))
