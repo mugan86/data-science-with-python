@@ -113,7 +113,7 @@ print(pg.columns)
 # Página 80-81
 
 # Dropping Columns
-pg.drop('is_w_pac_alternate', axis=1, inplace=True)
+pg.drop('is_w_pac_alternate', axis=1, inplace=True) # Con Implace modificamos el dataframe
 pg.drop('is_w_pac', axis=1, inplace=True)
 
 
@@ -142,13 +142,13 @@ print(pg.columns)
 
 # missing data
 pg['ft_pct'] = pg['ftm']/pg['fta']
-pg[['name', 'team', 'ftm', 'fta', 'ft_pct']].head()
+print(pg[['name', 'team', 'ftm', 'fta', 'ft_pct']].head())
 
-pg['ft_pct'].isnull().head()
+print(pg['ft_pct'].isnull().head())
 
-pg['ft_pct'].notnull().head()
+print(pg['ft_pct'].notnull().head())
 
-pg['ft_pct'].fillna(-99).head()
+print(pg['ft_pct'].fillna(-99).head())
 
 # Changing column types
 pg['date'].sample(5)
