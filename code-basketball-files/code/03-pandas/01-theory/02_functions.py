@@ -1,21 +1,26 @@
 import pandas as pd
-from os import path
+from project.config import get_file_path, FileExtension, Project
 
-# change this to the directory where the csv files that come with the book are
-# stored
-# on Windows it might be something like 'C:/mydir'
+# Ejecutamos con 
+# python3 -m code-basketball-files.code.03-pandas.01-theory.02_functions
 
-DATA_DIR = './data'
+# Página 74 Ejercicio 1: Cargar los datos "games.csv". Esto lo usaremos para los siguientes puntos
 
 # load player-game data
-pg = pd.read_csv(path.join(DATA_DIR, 'player_game.csv'))
 
+filePath = get_file_path("player_game", FileExtension.CSV, Project.BASKETBALL)
+print("Find Path:", filePath)
+
+pg = pd.read_csv(filePath)
+
+## Convierte a string algunos datos
 pg[['game_id', 'player_id', 'date']] = (
     pg[['game_id', 'player_id', 'date']].astype(str))
 
 # book picks up here:
-pg[['fgm', 'fga', 'fg_pct', 'pts', 'fg3m', 'fg3a', 'fg3_pct']].mean()
-pg[['fgm', 'fga', 'pts', 'fg3m', 'fg3a']].max()
+print('Media de los siguientes datos:')
+print(pg[['fgm', 'fga', 'fg_pct', 'pts', 'fg3m', 'fg3a', 'fg3_pct']].mean())
+print(pg[['name', 'fgm', 'fga', 'pts', 'fg3m', 'fg3a']].max())
 
 pg.max()
 
