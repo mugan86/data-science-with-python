@@ -2,7 +2,7 @@ import pandas as pd
 from project.config import get_file_path, FileExtension, Project
 
 # Ejecutamos con 
-# python3 -m code-basketball-files.code.03-pandas.00_basics
+# python3 -m code-basketball-files.code.03-pandas.01-theory.00_basics
 
 filePath = get_file_path("shots", FileExtension.CSV, Project.BASKETBALL)
 print("Find Path:", filePath)

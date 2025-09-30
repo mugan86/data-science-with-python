@@ -2,7 +2,7 @@ import pandas as pd
 from project.config import get_file_path, FileExtension, Project
 
 # Ejecutamos con 
-# python3 -m code-basketball-files.code.03-pandas.01_columns
+# python3 -m code-basketball-files.code.03-pandas.01-theory.01_columns
 
 # Página 74 Ejercicio 1: Cargar los datos "games.csv". Esto lo usaremos para los siguientes puntos
 
