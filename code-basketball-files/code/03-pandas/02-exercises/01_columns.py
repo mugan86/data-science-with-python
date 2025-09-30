@@ -187,3 +187,68 @@ player_game['game_id'] = player_game["game_id"].astype(str).replace("nan", "unkn
 
 print('Game id convertido a str')
 print(player_game['game_id'].head(40))
+
+## Página 86 Ejercicio 7:
+## Cambiar las columnas y dejarlas sin guiones bajos
+## Volver a lo que estaba
+
+print("Columnas antes de cambiarlas")
+print(player_game.columns)
+print("Eliminar '_'")
+
+player_game.columns = [x.replace('_', ' ') for x in player_game.columns]
+
+print(player_game.columns)
+
+player_game.columns = [x.replace(' ', '_') for x in player_game.columns]
+print("Añadir de nuevo '_'")
+print(player_game.columns)
+
+## Página 86 Ejercicio 8
+"""
+a) "Crear una nueva columna 'oreb_percentage' que indique el porcentaje de los rebotes de un jugador que fueron ofensivos."
+b) "Faltan valores en 'oreb_percentage'. En otra línea, confirma que funcionó."
+"""
+
+# 8.a)
+
+# rebotes ofensivos = oreb / rebotes totales reb
+# 100% --------- rebotes totales
+# x% ----------- rebotes ofensivos
+# x = (rebotes ofensivos * 100) / rebotes totales
+
+player_game['oreb_percentage'] = (player_game['oreb'] * 100) / player_game['reb']
+
+print(player_game[['name', 'oreb', 'reb', 'oreb_percentage']].head())
+
+"""
+          name  oreb  reb  oreb_percentage
+0     L. James     1   10             10.0
+1    D. Howard     3    6             50.0
+2  L. Williams     1    5             20.0
+3    J. Dudley     0    0              NaN
+4     J. McGee     1    2             50.0
+"""
+
+## Reemplazar NaN por 0
+
+player_game['oreb_percentage'] = player_game['oreb_percentage'].fillna(0)
+
+print(player_game[['name', 'oreb', 'reb', 'oreb_percentage']].head())
+
+"""
+          name  oreb  reb  oreb_percentage
+0     L. James     1   10             10.0
+1    D. Howard     3    6             50.0
+2  L. Williams     1    5             20.0
+3    J. Dudley     0    0              0.0 <==== Este era NaN
+4     J. McGee     1    2             50.0
+"""
+
+## Página 86 - Ejercicio 9 Eliminar la columna 'oreb_percentage'
+
+print('Columnas actuales (antes de borrar "oreb_percentage"): ', player_game.columns)
+
+player_game.drop('oreb_percentage', axis=1,  inplace=True)
+
+print('Columnas actuales (después de borrar "oreb_percentage"): ', player_game.columns)
