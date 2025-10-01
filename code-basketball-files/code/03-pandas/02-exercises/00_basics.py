@@ -88,6 +88,15 @@ print(games_simple)
 games_simple['game_id'] = games['game_id']
 print(games_simple.head())
 
+"""
+    home away        date  home_pts  away_pts   game_id
+281  HOU  ATL  2019-11-30       158       111  21900282
+60   WAS  HOU  2019-10-30       158       159  21900061
+686  ATL  WAS  2020-01-26       152       133  21900687
+704  MIL  WAS  2020-01-28       151       131  21900705
+181  LAC  ATL  2019-11-16       150       101  21900182
+"""
+
 # d) Crear un fichero nuevo a partir de games_simple que se llamará games_simple.txt y se separará con '|' en vez de ','
 
 games_simple.to_csv(get_file_path("games_simple", FileExtension.TXT, Project.BASKETBALL), sep='|')

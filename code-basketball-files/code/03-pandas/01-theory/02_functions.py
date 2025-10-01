@@ -4,8 +4,6 @@ from project.config import get_file_path, FileExtension, Project
 # Ejecutamos con 
 # python3 -m code-basketball-files.code.03-pandas.01-theory.02_functions
 
-# Página 74 Ejercicio 1: Cargar los datos "games.csv". Esto lo usaremos para los siguientes puntos
-
 # load player-game data
 
 filePath = get_file_path("player_game", FileExtension.CSV, Project.BASKETBALL)
