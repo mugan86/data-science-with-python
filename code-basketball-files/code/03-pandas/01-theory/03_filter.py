@@ -42,7 +42,8 @@ team                                             LAL
 team2                                            NaN
 Name: 2544, dtype: object
 """
-
+# Añadimos ids que sabemos que corresponde a 3 jugadores de Los Ángeles Lakers
+# Lebron James, Anthony Davis y Russel Westbrook
 laker_ids = ([2544, 203076, 201566])
 
 print('Obtener jugadores de los lakers con todas las columnas')
@@ -128,37 +129,182 @@ player_id
 201143       A. Horford  Dominican Republic    6-9   240.0
 """
 
-# Duplicates
+# Duplicados: Sirve para eliminar elementos duplicados
+
+"""
+drop_duplicates() sin argumento → elimina duplicados comparando toda la fila.
+
+drop_duplicates('col') → elimina duplicados comparando solo esa(s) columna(s).
+
+En ambos casos, se queda con la primera aparición a menos que indiques keep='last' o keep=False.
+"""
+
+# Elimina cuando las columnas de una fila, están duplicadas. En este caso, en el fichero no hay duplicados
 dfp.drop_duplicates(inplace=True)
 
-dfp.drop_duplicates('pos')[['name', 'pos', 'height', 'weight']]
 
-dfp.duplicated().head()
+# Aquí elimina teniendo en cuenta el campo "pos"
+"""
+Quédate solo con un jugador por posición (pos).
+Luego selecciona esas 4 columnas para mostrar.
+"""
+dfp_remove_pos_duplicates = dfp.drop_duplicates('pos')[['name', 'pos', 'height', 'weight']]
+print('Al eliminar duplicados por "pos", coge los tres primeros de cada uno de esos puestos con los valores seleccionados como name, pos, height y weight')
+print(dfp_remove_pos_duplicates)
 
-dfp['pos'].duplicated().head()
+print("Resultado si globalmente si se diera un duplicado (no hay en el global duplicados) - ")
+print("Muestra True en el caso de que se vaya a borrar")
+print(dfp.duplicated().head(10))
 
-dfp.drop_duplicates('pos')
+print("Eliminar duplicados por 'pos', nos dice que se eliminarán con 'True'")
+print(dfp['pos'].duplicated().head())
+
+print("Datos sin duplicados por 'pos', es decir, ya se ha borrado los duplicados por 'pos'")
+print("En este caso tiene toda las columnas ya que no se ha seleccionado las que queremos")
+print(dfp.drop_duplicates('pos'))
+ 
+# Este es equivalente a "dfp.drop_duplicates('pos')"
 dfp.loc[~dfp['pos'].duplicated()]
 
-# Combining filtering with changing columns
+"""
+df['pos'].duplicated(keep='first')  # default: marca duplicados menos la primera aparición
+df['pos'].duplicated(keep='last')   # marca duplicados menos la última aparición
+df['pos'].duplicated(keep=False)    # todas las ocurrencias de duplicados → True
+"""
+
+df = pd.DataFrame({"pos": ["PG","PG","SG","SG","PF"]})
+
+print("duplicated (default first):")
+print(df['pos'].duplicated())  # default keep='first'
+
+print("\nduplicated (keep='last'):")
+print(df['pos'].duplicated(keep='last'))
+
+print("\nduplicated (keep=False):")
+print(df['pos'].duplicated(keep=False))
+
+# Confinando filtros con cambios en las columnas
+# ================================
+# 🔹 Clasificación de jugadores según el Draft
+# ================================
+# ================================================
+# 📌 Uso de .loc en pandas
+# Sintaxis: df.loc[condición_filas, columnas]
+#
+# 1. Antes de la coma → condición booleana para elegir filas.
+# 2. Después de la coma → columnas que quiero leer o modificar.
+# 3. = valor → asignación del nuevo contenido.
+#
+# Ejemplo:
+# df.loc[df['age'] > 20, 'city'] = 'España'
+#
+# - Selecciona filas donde age > 20
+# - En la columna "city"
+# - Asigna el valor "España"
+# ================================================
+
+# Creamos una nueva columna vacía llamada 'draft_desc' en todo el DataFrame
 dfp['draft_desc'] = ''
+
+# Asignamos "first round" a todos los jugadores seleccionados en la primera ronda
 dfp.loc[dfp['draft_round'] == 1, 'draft_desc'] = 'first round'
+
+# Refinamos: si además fueron del pick 1 al 14, los marcamos como "lottery"
 dfp.loc[(dfp['draft_round'] == 1) & (dfp['draft_number'] <= 14), 'draft_desc'] = 'lottery'
+
+# Refinamos aún más: si fueron picks del 1 al 5, los marcamos como "top 5"
 dfp.loc[(dfp['draft_round'] == 1) & (dfp['draft_number'] <= 5), 'draft_desc'] = 'top 5'
+
+# Jugadores elegidos en segunda ronda → "second round"
 dfp.loc[dfp['draft_round'] == 2, 'draft_desc'] = 'second round'
+
+# Jugadores sin datos de draft (NaN en draft_round) → "undrafted"
 dfp.loc[dfp['draft_round'].isnull(), 'draft_desc'] = 'undrafted'
 
-dfp[['name', 'school', 'draft_round', 'draft_number', 'draft_desc']].sample(5)
+# Mostramos una muestra aleatoria de 5 filas con las columnas relevantes
+print(dfp[['name', 'school', 'draft_round', 'draft_number', 'draft_desc']].sample(5))
+
+"""
+import pandas as pd
+
+df = pd.DataFrame({
+    "name": ["A", "B", "C", "D"],
+    "age": [19, 25, 30, 17],
+    "group": ""
+})
+
+# A todos los mayores de 20 → poner "adult"
+df.loc[df['age'] > 20, 'group'] = "adult"
+
+# A todos los menores o iguales de 20 → poner "young"
+df.loc[df['age'] <= 20, 'group'] = "young"
+
+print(df)
+
+  name  age  group
+0    A   19   young
+1    B   25   adult
+2    C   30   adult
+3    D   17   young
+"""
 
 # Query
-dfp.query("school == 'North Carolina'").head()
+# ================================================
+# 📌 Uso de .query() en pandas
+# Permite filtrar filas usando expresiones tipo SQL,
+# más legibles que con .loc.
+#
 
+
+
+#
+# ⚠️ Nota: A veces .query() con funciones como isnull()
+# requiere especificar el motor de evaluación:
+# dfp.query("draft_round.isnull()", engine='python')
+#
+# 👍 Ventaja: query es más legible que df.loc[condición]
+# ================================================
+
+# 🔹 Ejemplo 1: Filtrar por valor exacto
+# dfp.query("school == 'North Carolina'")
+#
+print(dfp.query("school == 'North Carolina'").head())
+
+# 🔹 Ejemplo 2: Crear columna booleana y filtrar con ella
+# dfp['school_in_kentucky'] = dfp['school'] == 'Kentucky'
+# dfp.query("school_in_kentucky")
 dfp['school_in_kentucky'] = dfp['school'] == 'Kentucky'
 
 dfp.query("school_in_kentucky").head()
 
+# 🔹 Ejemplo 3: Filtrar valores nulos con isnull()
+# dfp.query("draft_round.isnull()")[['name','school','draft_round','draft_number']]
 dfp.query("draft_round.isnull()")[['name', 'school', 'draft_round', 'draft_number']].head()
 
 # note: if getting an error on line above, try it with engine='python' like
 # this
 dfp.query("draft_round.isnull()", engine='python')[['name', 'school', 'draft_round', 'draft_number']].head()
+
+# ============================================================
+# 📌 Comparación entre .loc[] y .query() en pandas
+#
+# 🔹 Selección por valor exacto
+#   con loc   → dfp.loc[dfp['school'] == 'North Carolina']
+#   con query → dfp.query("school == 'North Carolina'")
+#
+# 🔹 Filtrar usando una columna booleana
+#   dfp['school_in_kentucky'] = dfp['school'] == 'Kentucky'
+#   con loc   → dfp.loc[dfp['school_in_kentucky']]
+#   con query → dfp.query("school_in_kentucky")
+#
+# 🔹 Filtrar valores nulos
+#   con loc   → dfp.loc[dfp['draft_round'].isnull(), ['name','school','draft_round','draft_number']]
+#   con query → dfp.query("draft_round.isnull()")[['name','school','draft_round','draft_number']]
+#
+# ⚠️ Nota: Algunas funciones como isnull() pueden dar error en query,
+# en ese caso usar → dfp.query("draft_round.isnull()", engine='python')
+#
+# ✅ Resumen:
+# - .loc[] → más flexible, soporta cualquier condición Python.
+# - .query() → más legible y corto, estilo SQL, ideal para filtros simples.
+# ============================================================
