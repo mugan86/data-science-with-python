@@ -50,6 +50,57 @@ dft_chi1['fg2m'] = dft_chi1['fgm'] - dft_chi1['fg3m']
 print(dft_chi1.head(5))
 
 # b) Haciendo uso de query
+
+# Chicago Bulls
 dft_chi2 = dfp.query("team == 'CHI'")[['team', 'date', 'pts', 'fgm', 'fga']]
 
 print(dft_chi2.head(5))
+
+# Página 103 Ejercicio 3: Crear un pequeño DataFrame con los partidos QUE NO SEAN 
+# de los Chicago Bulls (CHI) con las columnas 'team', 'date', 'pts', 'fgm', 'fga'.
+
+dft_no_chi = dfp.loc[dfp['team'] != 'CHI'][['team', 'date', 'pts', 'fgm', 'fga']]
+
+print(dft_no_chi.sample(10))
+
+# Página 103 Ejercicio 4
+"""
+a) ¿Existen actuaciones donde los equipos tuvieron exactamente el mismo rendimiento de tiro (ignorando los tiros libres)? ¿Cuántas?
+
+b) Divide dfg en dos DataFrames separados:
+
+dfg_fg_dup: con duplicados (por tiros de campo y triples anotados e intentados).
+
+dfg_fg_no_dup: sin duplicados.
+
+Recordar para buscar si hay algún duplicado
+
+# 3) any() y all():
+#    - .any() → ¿existe al menos un True?
+#       (pg['fg3a'] > 30).any() → ¿alguno intentó >30 triples?
+#    - .all() → ¿todos son True?
+#       (pg['min'] > 0).all() → ¿todos jugaron más de 0 min?
+#   Aquí, como no se especifica el axis, hace el escaneo de arriba a abajo, en la columna seleccionada
+#   que en este caso es 'fg3a'
+#
+
+"""
+
+print("Número de duplicados: ", (dfp[['fga', 'fgm', 'fg3a', 'fg3m']].duplicated()).sum())
+print("¿Hay equipos con mismo rendimiento en estadísticas de tiro?")
+print("Con duplicated y usando any() para que si hay uno mínimo de true")
+print(dfp[['fga', 'fgm', 'fg3a', 'fg3m']].duplicated().any())
+print("Usando sum y contando que sea más que 0")
+print((dfp[['fga', 'fgm', 'fg3a', 'fg3m']].duplicated()).sum() > 0)
+
+
+# b
+# flags ALL dups (not just 2nd) because passing keep=False
+dups = dfp[['fga', 'fgm', 'fg3a', 'fg3m']].duplicated(keep=False)
+
+dftg_fg_dup = dfp.loc[dups]
+dftg_fg_no_dup = dfp.loc[~dups]
+
+print('Duplicados: ', dftg_fg_dup.head())
+
+print('NO Duplicados: ', dftg_fg_no_dup.head())
