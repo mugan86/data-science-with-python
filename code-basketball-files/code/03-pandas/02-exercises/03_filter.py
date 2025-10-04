@@ -104,3 +104,45 @@ dftg_fg_no_dup = dfp.loc[~dups]
 print('Duplicados: ', dftg_fg_dup.head())
 
 print('NO Duplicados: ', dftg_fg_no_dup.head())
+
+# Página 103 Ejercicio 5
+
+"""
+Crea una nueva columna llamada three_pt_desc para añadir la valoración del porcentaje de triples que anota
+el equipo
+
+- + de 50% = 'great'
+- + de 30% = 'good'
+- Menos sin añadir nada, será indefinido
+"""
+import numpy as np
+def eval_three_points_status(percent):
+    if percent > 0.5:
+        return 'great'
+    elif percent >= 0.3:
+        return 'brutal'
+    return np.nan
+
+
+dfp['three_pt_desc'] = dfp['fg3_pct'].apply(eval_three_points_status)
+
+print(dfp[['fg3_pct', 'three_pt_desc']].sample(10))
+
+# Página 103 Ejercicio 6
+"""
+Supongamos que tu DataFrame se llama df. La columna con los triples es three_pt_desc. 
+Queremos solo las filas donde three_pt_desc es NaN.
+"""
+
+# a) con loc
+
+dfp_no_desc1 = dfp.loc[dfp['three_pt_desc'].isnull()]
+print(dfp_no_desc1.sample(20))
+dfp_no_desc2 = dfp.loc[dfp['three_pt_desc'].isna()]
+print(dfp_no_desc2.sample(20))
+
+# b) con query
+
+dfp_no_desc3 = dfp.query("three_pt_desc.isnull()")
+
+print(dfp_no_desc3[['three_pt_desc', 'fg3_pct']].sample(20))
